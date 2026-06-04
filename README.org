@@ -8,7 +8,11 @@ Render Typst math equations as inline overlays in Emacs. Equations are asynchron
 ** Requirements
 - Emacs 29.1 or later
 - [[https://typst.app][typst]] compiler available on =PATH=
-- Tree-sitter grammar for Typst
+- Tree-sitter grammar for Typst (only required for =typst-ts-mode= buffers)
+
+** Supported modes
+- =org-mode= — renders =$...$= as Typst math
+- =typst-ts-mode= — renders all math equations in Typst documents
 
 ** Installation
 #+begin_src emacs-lisp
@@ -23,7 +27,7 @@ Render Typst math equations as inline overlays in Emacs. Equations are asynchron
 #+end_src
 
 ** Usage
-Enable the minor mode in a =typst-ts-mode= buffer with =M-x typst-overlay-mode=. To render overlays manually run =M-x typst-overlay-refresh=.
+Enable the minor mode with =M-x typst-overlay-mode=. To render overlays manually run =M-x typst-overlay-refresh=.
 
 ** Configuration
 All options are available via =M-x customize-group RET typst-overlay=.
