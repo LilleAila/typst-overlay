@@ -187,15 +187,18 @@ Math nodes that appear after a parse error in the document are excluded."
   (let (math-nodes)
     (save-excursion
       (goto-char (point-min))
-      (while (re-search-forward "\\(?:\\$[^\n$ ]\\(?:[^$\n]*[^\n$ ]\\)?\\$\\|^[ \t]*\\$[ \t]*\n[^\0]*?\n[ \t]*\\$[ \t]*\\(\r?\n\\)?\\)" nil t)
-        (let* ((beg (match-beginning 0))
-               (end (match-end 0))
-               (text (match-string-no-properties 0)))
+      (while (re-search-forward "\\(?:\\$[^\n$ ]\\(?:[^$\n]*[^\n$ ]\\)?\\$\\|\\(?:^\n[ \t]*\\$[ \t]*\n[^\0]*?[^\n]*?[ \t]*\\$[ \t]*\\(\r?\n\\)?\\)\\)" nil t)
+        (let* ((raw-beg (match-beginning 0))
+               (raw-end (match-end 0))
+               (text (match-string-no-properties 0))
+               (beg (if (string-prefix-p "\n" text) (1+ raw-beg) raw-beg))
+               (end (if (string-suffix-p "\n" text) (1- raw-end) raw-end))
+               (clean-text (string-trim text)))
           (push (make-typst-overlay-math-node
                  :beg beg
                  :end end
-                 :text text
-                 :text-hash (md5 text))
+                 :text clean-text
+                 :text-hash (md5 clean-text))
                 math-nodes))))
     (make-typst-overlay-analysis
      :code-nodes nil
