@@ -187,7 +187,7 @@ Math nodes that appear after a parse error in the document are excluded."
   (let (math-nodes)
     (save-excursion
       (goto-char (point-min))
-      (while (re-search-forward "\\$[^$\n]+\\$" nil t)
+      (while (re-search-forward "\\(?:\\$[^\n$ ]\\(?:[^$\n]*[^\n$ ]\\)?\\$\\|^[ \t]*\\$[ \t]*\n[^\0]*?\n[ \t]*\\$[ \t]*\\(\r?\n\\)?\\)" nil t)
         (let* ((beg (match-beginning 0))
                (end (match-end 0))
                (text (match-string-no-properties 0)))
