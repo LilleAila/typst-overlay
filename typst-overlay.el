@@ -35,6 +35,11 @@
   :type 'natnum
   :group 'typst-overlay)
 
+(defcustom typst-overlay-extra-prelude ""
+  "Extra Typst code prepended to every rendered overlay element."
+  :type 'string
+  :group 'typst-overlay)
+
 ;; constants / buffer-local state
 (defvar-local typst-overlay--snapshot nil)
 (defvar-local typst-overlay--active-overlay nil)
@@ -780,6 +785,9 @@ Unchanged entries are no-op."
      "#set page(width: auto, height: auto, margin: 1pt, fill: none)\n"
      "#set text(top-edge: \"bounds\", bottom-edge: \"bounds\")\n"
      "#set text(fill: rgb(\"#000000\"))\n"
+     (if (string-empty-p typst-overlay-extra-prelude)
+         ""
+       (concat typst-overlay-extra-prelude "\n"))
      prelude
      (unless (string-empty-p prelude) "\n\n")
      math
